@@ -27,13 +27,12 @@ const Hero = () => {
         <div className="flex items-center gap-3">
           <CustomButton
             title="Explore Cars"
-            containerStyles="bg-primary-blue text-white rounded-full mt-10"
+            containerStyles="bg-primary-blue text-white rounded-full mt-10 cursor-pointer"
             handleClick={handleScroll}
           />
           <CustomButton
             title="Sell Your Cars"
-            containerStyles="text-primary-blue rounded-full bg-white mt-10 min-w-[130px] border-solid border-2"
-            handleClick={handleScroll}
+            containerStyles="text-primary-blue rounded-full bg-white mt-10 min-w-[130px] border-solid border-2 cursor-pointer"
           />
         </div>
       </div>
