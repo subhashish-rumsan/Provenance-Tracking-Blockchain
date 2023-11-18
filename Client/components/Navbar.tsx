@@ -12,9 +12,9 @@ const NavBar = () => {
 
   useEffect(() => {
     if (account) {
-      setTitle("Disconnect your wallet");
+      setTitle("Disconnect wallet");
     } else {
-      setTitle("Connect your wallet");
+      setTitle("Connect wallet");
     }
   }, [account]);
 
@@ -31,12 +31,20 @@ const NavBar = () => {
           />
         </Link>
 
-        <CustomButton
-          title={title}
-          btnType="button"
-          containerStyles="text-primary-blue rounded-full bg-white min-w-[130px] border-solid border-2"
-          handleClick={account ? logout : requestAccount}
-        />
+        <div className="flex justify-center items-center gap-5">
+          <CustomButton
+            title={title}
+            btnType="button"
+            containerStyles="text-primary-blue rounded-full bg-white min-w-[130px] border-solid border-2"
+            handleClick={account ? logout : requestAccount}
+          />
+          {account && (
+            <div className="py-3 px-5 flex items-center text-white rounded-full bg-primary-blue min-w-[130px]  gap-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <p>Connected</p>
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );
