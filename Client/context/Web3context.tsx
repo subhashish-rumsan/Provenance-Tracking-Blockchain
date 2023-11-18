@@ -31,7 +31,7 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
     return null;
   });
 
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -59,7 +59,7 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
         const connectedAccount = accounts[0];
         setAccount(connectedAccount);
         localStorage.setItem("userAccount", connectedAccount);
-        setError(null); // Clearing error state on successful login
+        setError(null);
       } else {
         setError("Ethereum provider not detected or web3 not available.");
       }
