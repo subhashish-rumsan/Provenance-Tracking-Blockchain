@@ -71,7 +71,7 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
   const logout = () => {
     localStorage.removeItem("userAccount");
     setAccount(null);
-    setError(null); // Clearing error state on logout
+    setError(null);
   };
 
   const contextValue: ContextValue = {
@@ -79,7 +79,7 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
     account,
     requestAccount,
     logout,
-    error, // Adding error state to the context value
+    error,
   };
 
   return (
