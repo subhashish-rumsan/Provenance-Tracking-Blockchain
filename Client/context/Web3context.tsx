@@ -10,14 +10,16 @@ interface ContextValue {
   web3: Web3 | null;
   account: string | null;
   requestAccount: () => Promise<void>;
-  logout: () => Promise<void>;
+  logout: () => void;
+  error: string | null;
 }
 
 const Web3Context = createContext<ContextValue>({
   web3: null,
   account: null,
   requestAccount: async () => {},
-  logout: async () => {},
+  logout: () => {},
+  error: null,
 });
 
 const Web3Provider = ({ children }: Web3ContextProps) => {
@@ -29,12 +31,17 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
     return null;
   });
 
+  const [error, setError] = useState<string | null>(null); // Error state
+
   useEffect(() => {
-    // Initialize web3 with provider (Infura, etc.)
     const initWeb3 = async () => {
-      if ((window as any).ethereum) {
-        const newWeb3 = new Web3((window as any).ethereum);
-        setWeb3(newWeb3);
+      try {
+        if ((window as any).ethereum) {
+          const newWeb3 = new Web3((window as any).ethereum);
+          setWeb3(newWeb3);
+        }
+      } catch (error: any) {
+        setError("Error initializing Web3: " + error.message);
       }
     };
 
@@ -50,19 +57,21 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
         });
 
         const connectedAccount = accounts[0];
-        // Update account in the context
         setAccount(connectedAccount);
         localStorage.setItem("userAccount", connectedAccount);
+        setError(null); // Clearing error state on successful login
       } else {
-        // Handle cases where the user doesn't have an Ethereum wallet or browser support
+        setError("Ethereum provider not detected or web3 not available.");
       }
-    } catch (error) {
-      // Handle errors during the login process
+    } catch (error: any) {
+      setError("Error logging in: " + error.message);
     }
   };
-  const logout = async () => {
+
+  const logout = () => {
     localStorage.removeItem("userAccount");
     setAccount(null);
+    setError(null); // Clearing error state on logout
   };
 
   const contextValue: ContextValue = {
@@ -70,6 +79,7 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
     account,
     requestAccount,
     logout,
+    error, // Adding error state to the context value
   };
 
   return (
