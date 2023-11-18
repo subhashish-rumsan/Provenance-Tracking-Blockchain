@@ -3,11 +3,20 @@ import Link from "next/link";
 import Image from "next/image";
 
 import CustomButton from "./CustomButton";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Web3Context } from "@context/Web3context";
 
 const NavBar = () => {
-  const { account, requestAccount } = useContext(Web3Context);
+  const { account, requestAccount, logout } = useContext(Web3Context);
+  const [title, setTitle] = useState<string>("");
+
+  useEffect(() => {
+    if (account) {
+      setTitle("Disconnect your wallet");
+    } else {
+      setTitle("Connect your wallet");
+    }
+  }, [account]);
 
   return (
     <header className="w-full  absolute z-10">
@@ -23,10 +32,10 @@ const NavBar = () => {
         </Link>
 
         <CustomButton
-          title="Connect your wallet"
+          title={title}
           btnType="button"
           containerStyles="text-primary-blue rounded-full bg-white min-w-[130px] border-solid border-2"
-          handleClick={requestAccount}
+          handleClick={account ? logout : requestAccount}
         />
       </nav>
     </header>

@@ -10,17 +10,24 @@ interface ContextValue {
   web3: Web3 | null;
   account: string | null;
   requestAccount: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const Web3Context = createContext<ContextValue>({
   web3: null,
   account: null,
   requestAccount: async () => {},
+  logout: async () => {},
 });
 
 const Web3Provider = ({ children }: Web3ContextProps) => {
   const [web3, setWeb3] = useState<Web3 | null>(null);
-  const [account, setAccount] = useState<string | null>(null);
+  const [account, setAccount] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userAccount") || null;
+    }
+    return null;
+  });
 
   useEffect(() => {
     // Initialize web3 with provider (Infura, etc.)
@@ -39,11 +46,13 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
       if (web3 && (window as any).ethereum) {
         const accounts = await (window as any).ethereum.request({
           method: "eth_requestAccounts",
+          params: [{ force: true }],
         });
-        const connectedAccount = accounts[0];
 
+        const connectedAccount = accounts[0];
         // Update account in the context
         setAccount(connectedAccount);
+        localStorage.setItem("userAccount", connectedAccount);
       } else {
         // Handle cases where the user doesn't have an Ethereum wallet or browser support
       }
@@ -51,11 +60,16 @@ const Web3Provider = ({ children }: Web3ContextProps) => {
       // Handle errors during the login process
     }
   };
+  const logout = async () => {
+    localStorage.removeItem("userAccount");
+    setAccount(null);
+  };
 
   const contextValue: ContextValue = {
     web3,
     account,
     requestAccount,
+    logout,
   };
 
   return (
