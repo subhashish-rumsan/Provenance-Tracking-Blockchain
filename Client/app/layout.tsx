@@ -1,3 +1,4 @@
+import { Web3Provider } from "@context/Web3context";
 import "./globals.css";
 
 import { Footer, NavBar } from "@components";
@@ -16,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="relative">
-        <NavBar />
-        {children}
-        <Footer />
+        <Web3Provider>
+          <NavBar />
+          {children}
+          <Footer />
+        </Web3Provider>
       </body>
     </html>
   );

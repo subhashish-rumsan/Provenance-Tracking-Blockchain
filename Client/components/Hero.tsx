@@ -17,19 +17,24 @@ const Hero = () => {
     <div className="hero">
       <div className="flex-1 pt-36 padding-x">
         <h1 className="hero__title">
-          Find, book, rent a car—quick and super easy!
+          Find, book, own a car—quick and super easy!
         </h1>
 
         <p className="hero__subtitle">
-          Streamline your car rental experience with our effortless booking
-          process.
+          Empowering Community, Driving Together Token Drive - Your Share in
+          Every Journey
         </p>
-
-        <CustomButton
-          title="Explore Cars"
-          containerStyles="bg-primary-blue text-white rounded-full mt-10"
-          handleClick={handleScroll}
-        />
+        <div className="flex items-center gap-3">
+          <CustomButton
+            title="Explore Cars"
+            containerStyles="bg-primary-blue text-white rounded-full mt-10 cursor-pointer"
+            handleClick={handleScroll}
+          />
+          <CustomButton
+            title="Sell Your Cars"
+            containerStyles="text-primary-blue rounded-full bg-white mt-10 min-w-[130px] border-solid border-2 cursor-pointer"
+          />
+        </div>
       </div>
       <div className="hero__image-container">
         <div className="hero__image">
