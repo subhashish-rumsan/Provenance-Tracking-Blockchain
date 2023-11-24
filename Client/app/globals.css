@@ -11,16 +11,6 @@
   font-family: "Manrope", sans-serif;
 }
 /* Hide the default scrollbar */
-*,
-html {
-  -ms-overflow-style: none; /* Edge, Internet Explorer */
-  scrollbar-width: none; /* Firefox */
-  overflow-y: scroll;
-}
-
-html::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
 
 /* START: General styles */
 .max-width {

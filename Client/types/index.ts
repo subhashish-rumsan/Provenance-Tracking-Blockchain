@@ -73,5 +73,6 @@ export interface CarDetailsProps {
 
 export interface AccordionPropsI {
   accordionTitle: string;
-  accordionBody: string | CarProps;
+  accordionBody: string | React.ReactNode | CarProps[];
+  defaultOpen: boolean;
 }
