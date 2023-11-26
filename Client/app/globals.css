@@ -10,6 +10,7 @@
   box-sizing: border-box;
   font-family: "Manrope", sans-serif;
 }
+/* Hide the default scrollbar */
 
 /* START: General styles */
 .max-width {

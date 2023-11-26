@@ -66,3 +66,13 @@ export interface SearchManuFacturerProps {
   manufacturer: string;
   setManuFacturer: (manufacturer: string) => void;
 }
+
+export interface CarDetailsProps {
+  car: CarProps;
+}
+
+export interface AccordionPropsI {
+  accordionTitle: string;
+  accordionBody: string | React.ReactNode | CarProps[];
+  defaultOpen: boolean;
+}
