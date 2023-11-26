@@ -3,11 +3,11 @@ import { ethers } from "hardhat";
 async function main() {
   const [deployer] = await ethers.getSigners();
 
-  const Storage = await ethers.getContractFactory("Storage");
+  const AuthContract = await ethers.getContractFactory("Auth");
 
-  const storage = await Storage.deploy();
+  const authContract = await AuthContract.deploy();
 
-  console.log("Storage deployed to:", await storage.getAddress());
+  console.log("Storage deployed to:", await authContract.getAddress());
 }
 
 main()
