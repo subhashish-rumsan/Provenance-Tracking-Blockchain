@@ -5,8 +5,12 @@ import Image from "next/image";
 import { CustomButton } from "@components";
 import { useModal } from "@context/ModalContext";
 import CarSellModal from "./CarSellModal";
+import { useContext } from "react";
+import { Web3Context } from "@context/Web3context";
 
 const Hero = () => {
+  const { account, requestAccount } = useContext(Web3Context);
+
   const { openModal } = useModal();
   const handleScroll = () => {
     const nextSection = document.getElementById("discover");
@@ -36,7 +40,7 @@ const Hero = () => {
             />
             <CustomButton
               title="Sell Your Cars"
-              handleClick={openModal}
+              handleClick={account ? openModal : requestAccount}
               containerStyles="text-primary-blue rounded-full bg-white mt-10 min-w-[130px] border-solid border-2 cursor-pointer"
             />
           </div>
