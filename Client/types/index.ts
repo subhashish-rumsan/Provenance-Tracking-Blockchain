@@ -76,3 +76,7 @@ export interface AccordionPropsI {
   accordionBody: string | React.ReactNode | CarProps[];
   defaultOpen: boolean;
 }
+
+export interface UploadFilePropsI {
+  fileToUpload: File;
+}
