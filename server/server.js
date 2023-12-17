@@ -11,7 +11,7 @@ const PINATA_JWT = process.env.PINATA_JWT;
 
 const pinata = new pinataSDK({ pinataJWTKey: PINATA_JWT });
 
-const PINATA_GATEWAY = "https://gateway.pinata.cloud/ipfs/";
+const PINATA_GATEWAY = "https://teal-impossible-harrier-719.mypinata.cloud/";
 
 const app = express();
 app.use(cors());
@@ -22,7 +22,7 @@ const busboyFileHandler = (req, res, next) => {
   const payload = {};
   let fileName;
   bb.on("field", (fieldname, val) => {
-    payload[fieldname] = JSON.parse(val);
+    payload[fieldname] = val;
   });
   let buffer = Buffer.alloc(0);
   bb.on("file", async (field, file, filename) => {
@@ -41,11 +41,10 @@ const busboyFileHandler = (req, res, next) => {
       },
     };
     const readableStream = Readable.from(buffer);
-
     const result = await pinata.pinFileToIPFS(readableStream, options);
     const imageURL = `${PINATA_GATEWAY}/${result.IpfsHash}`;
     let metadata = {
-      ...payload.metadata,
+      ...payload,
       image: imageURL,
       createdAt: new Date(),
     };
