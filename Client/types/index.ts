@@ -78,5 +78,8 @@ export interface AccordionPropsI {
 }
 
 export interface UploadFilePropsI {
-  fileToUpload: File;
+  model: string;
+  plate: string;
+  description: string;
+  file: File;
 }
