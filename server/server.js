@@ -11,7 +11,7 @@ const PINATA_JWT = process.env.PINATA_JWT;
 
 const pinata = new pinataSDK({ pinataJWTKey: PINATA_JWT });
 
-const PINATA_GATEWAY = "https://teal-impossible-harrier-719.mypinata.cloud/";
+const PINATA_GATEWAY = process.env.PINATA_GATEWAY;
 
 const app = express();
 app.use(cors());
