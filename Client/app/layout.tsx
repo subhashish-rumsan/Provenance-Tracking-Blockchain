@@ -2,6 +2,8 @@ import { Web3Provider } from "@context/Web3context";
 import "./globals.css";
 
 import { Footer, NavBar } from "@components";
+import { ModalProvider } from "@context/ModalContext";
+import SnackbarWrapper from "@components/snackbar/SnackbarWrapper";
 
 export const metadata = {
   title: "Token Drive",
@@ -17,11 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="relative">
-        <Web3Provider>
-          <NavBar />
-          {children}
-          <Footer />
-        </Web3Provider>
+        <SnackbarWrapper>
+          <Web3Provider>
+            <ModalProvider>
+              <NavBar />
+              {children}
+              <Footer />
+            </ModalProvider>
+          </Web3Provider>
+        </SnackbarWrapper>
       </body>
     </html>
   );
