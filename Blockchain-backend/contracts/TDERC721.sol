@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import {IERC20} from "./interfaces/IERC20.sol";
+import {TDERC20} from "./TDERC20.sol";
 
 contract TDERC721 is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     uint256 public pricePerShare;
@@ -30,7 +31,7 @@ contract TDERC721 is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     }
 
     function deployERC20(string memory _name, string memory _symbol) public {
-        erc20Address = new MyToken20(_name, _symbol);
+        erc20Address = new TDERC20(_name, _symbol);
     }
 
     modifier onlyAboveMinimumShare(uint256 share) {
