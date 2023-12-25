@@ -2,7 +2,7 @@ import web3 from "@utils/web3";
 import { useState, useCallback, useEffect } from "react";
 
 // Replace with your actual ABI and contract address
-const ABI: JSON = [
+const ABI: any = [
   // ... your contract ABI here
 ];
 const CONTRACT_ADDRESS = "0x...";

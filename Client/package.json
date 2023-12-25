@@ -29,5 +29,8 @@
     "utf-8-validate": "^6.0.3",
     "web3": "^4.2.2",
     "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/web3": "^1.2.2"
   }
 }
