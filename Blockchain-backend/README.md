@@ -15,10 +15,18 @@ npx hardhat run scripts/deploy.ts
 ## To compile the contract
 
 ```shell
+npm run compile
+```
+
+```shell
 npx hardhat compile
 ```
 
 ## To deploy the contract
+
+```shell
+npm run deploy
+```
 
 ```shell
 npx hardhat run scripts/deploy.ts --network sepolia
@@ -27,5 +35,9 @@ npx hardhat run scripts/deploy.ts --network sepolia
 ## To verify the deployed contract
 
 ```shell
-npx hardhat verify --network sepolia contract address
+npm run verify <contract-address>
+```
+
+```shell
+npx hardhat verify --network sepolia contract-address
 ```
