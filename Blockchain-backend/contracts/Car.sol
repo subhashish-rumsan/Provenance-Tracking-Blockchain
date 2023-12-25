@@ -13,6 +13,8 @@ contract Car is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     ICarShare car;
     uint256 private pricePerShare;
 
+    event ShareTransferred(address indexed from, address indexed to, uint256 share);
+
     constructor(string memory _name, string memory _symbol,  string memory _uri, uint256 _price, address _erc20)
         ERC721(_name, _symbol)
         Ownable(msg.sender)
@@ -20,7 +22,6 @@ contract Car is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         car = ICarShare(_erc20);
         safeMint(msg.sender, 0, _uri);
         pricePerShare = _price * 1e9;
-        // set pricePerShare
     }
 
     modifier onlyAboveMinimumShare(uint256 share) {
@@ -45,6 +46,9 @@ contract Car is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
         car.transferToken(from, to, share);
         payable(from).transfer(share * pricePerShare);
+
+        // Emit the ShareTransferred event
+        emit ShareTransferred(from, to, share);
 
     }
 
