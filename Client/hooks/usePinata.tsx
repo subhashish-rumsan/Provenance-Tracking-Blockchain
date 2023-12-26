@@ -3,6 +3,7 @@ import { useState } from "react";
 import { UploadFilePropsI } from "@types";
 import snackbar from "@components/snackbar";
 import axios from "axios";
+import useContract from "./useContract";
 
 const usePinata = () => {
   const [file, setFile] = useState("");
@@ -10,6 +11,8 @@ const usePinata = () => {
   const [uploading, setUploading] = useState(false);
 
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  const { contract } = useContract();
 
   const uploadFile = async ({
     model,
@@ -30,6 +33,14 @@ const usePinata = () => {
         },
       });
       // setCid(ipfsHash);
+      const transaction = await contract.mintCar(
+        model,
+        "HX",
+        res?.data?.IpfsHash,
+        5000
+      );
+      console.log("transaction", transaction);
+      await transaction.wait();
       console.log("Response", res);
       setUploading(false);
       snackbar.success("Successfully Uploaded");
