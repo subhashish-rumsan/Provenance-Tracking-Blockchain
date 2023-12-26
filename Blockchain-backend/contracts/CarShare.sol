@@ -9,7 +9,10 @@ import { ICarShare } from "../interfaces/ICarShare.sol";
 
 contract CarShare is ERC20, ICarShare{
     uint256 private totalShare = 100;
-    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {}
+
+    constructor(string memory _name, string memory _symbol, address _owner) ERC20(_name, _symbol) {
+        _mint(_owner, totalShare);
+    }
 
     function mint (address owner) external {
         _mint(owner, totalShare);

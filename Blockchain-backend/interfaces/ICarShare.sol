@@ -9,3 +9,8 @@ interface ICarShare {
     function getTotalShare() external view  returns (uint256);
     function getTokens() external view  returns (string memory, string memory);
 }
+
+interface ICar {
+    function getUri() external view returns (string memory);
+    function getAllOwners () external view returns (address[] memory keys, uint256[] memory values);
+}

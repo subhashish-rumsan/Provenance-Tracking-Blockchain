@@ -7,21 +7,24 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import { ICarShare } from "../interfaces/ICarShare.sol";
+import { ICarShare, ICar } from "../interfaces/ICarShare.sol";
 
-contract Car is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
+contract Car is ERC721, ERC721URIStorage, ICar, ERC721Burnable, Ownable {
     ICarShare car;
     uint256 private pricePerShare;
+    address[] private shareOwners;
 
     event ShareTransferred(address indexed from, address indexed to, uint256 share);
 
-    constructor(string memory _name, string memory _symbol,  string memory _uri, uint256 _price, address _erc20)
+
+    constructor(string memory _name, string memory _symbol,  string memory _uri, uint256 _price, address _erc20, address _owner)
         ERC721(_name, _symbol)
-        Ownable(msg.sender)
+        Ownable(_owner)
     {
         car = ICarShare(_erc20);
-        safeMint(msg.sender, 0, _uri);
+        safeMint(_owner, 0, _uri);
         pricePerShare = _price * 1e9;
+        shareOwners.push(_owner);
     }
 
     modifier onlyAboveMinimumShare(uint256 share) {
@@ -34,6 +37,22 @@ contract Car is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     {
         _mint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    /**
+     * @dev Get all owners with shares
+     */
+    function getAllOwners () external view returns (address[] memory keys, uint256[] memory values) {
+        uint256 length = shareOwners.length;
+        keys = new address[](length);
+        values = new uint256[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            address ownerAdd = shareOwners[i];
+            keys[i] = ownerAdd;
+            values[i] = car.getShare(ownerAdd); // contractAdd => 721 IERC721(address)
+        }
+        return (keys, values);
     }
     
     /**
@@ -75,6 +94,13 @@ contract Car is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
      */
     function getTotalShare () external view returns (uint256){
         return car.getTotalShare();
+    }
+
+    /**
+     * @dev Return uri of the NFT
+     */
+    function getUri() external view  returns (string memory){
+        return  tokenURI(0);
     }
   
   // The following functions are overrides required by Solidity.
