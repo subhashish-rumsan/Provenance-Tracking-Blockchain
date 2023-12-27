@@ -19,7 +19,7 @@ const useContract = () => {
   useEffect(() => {
     const connect = async () => {
       try {
-        const { ethereum } = window;
+        const { ethereum } = window as any;
         if (!ethereum) {
           throw new Error("MetaMask is not installed");
         }
@@ -46,10 +46,10 @@ const useContract = () => {
     connect();
 
     // Handle accountsChanged event
-    window.ethereum.on("accountsChanged", connect);
+    (window as any).ethereum.on("accountsChanged", connect);
 
     return () => {
-      window.ethereum.removeListener("accountsChanged", connect);
+      (window as any).ethereum.removeListener("accountsChanged", connect);
     };
   }, []);
 
@@ -57,5 +57,4 @@ const useContract = () => {
     ...state,
   };
 };
-
 export default useContract;
