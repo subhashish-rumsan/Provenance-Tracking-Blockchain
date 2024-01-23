@@ -1,4 +1,5 @@
 require("dotenv").config();
+const db = require("./db");
 const express = require("express");
 const bodyParser = require("body-parser");
 const pinataSDK = require("@pinata/sdk");
@@ -70,6 +71,14 @@ app.post("/upload", async (req, res) => {
   busboyFileHandler(req, res);
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+db.authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+
+    app.listen(port, () => {
+      console.log(`Server started successfully in ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
