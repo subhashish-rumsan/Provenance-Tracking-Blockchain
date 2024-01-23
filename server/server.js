@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { Sequelize, Op, Model, DataTypes } = require("sequelize");
 const db = require("./db");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -17,6 +18,20 @@ const PINATA_GATEWAY = process.env.PINATA_GATEWAY;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+async function insertCar(metadata) {
+  try {
+    const car = await Car.create({
+      model: metadata.carModel,
+      number: metadata.carPlate,
+      description: metadata.carDescription,
+      imgUrl: metadata.image,
+    });
+    return car;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 const busboyFileHandler = (req, res, next) => {
   const bb = busboy({ headers: req.headers });
@@ -49,6 +64,9 @@ const busboyFileHandler = (req, res, next) => {
       image: imageURL,
       createdAt: new Date(),
     };
+    // upload metadata to db
+    const out = await insertCar(metadata);
+
     const metadataString = JSON.stringify(metadata);
     const metadataReadableStream = Readable.from(metadataString);
     const metadataOptions = {
@@ -67,12 +85,41 @@ const busboyFileHandler = (req, res, next) => {
   req.pipe(bb);
 };
 
+const Car = db.define("car", {
+  model: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  number: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  imgUrl: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.NOW,
+  },
+});
+
 app.post("/upload", async (req, res) => {
   busboyFileHandler(req, res);
 });
 
+app.get("/getCars", async (req, res) => {
+  const cars = await Car.findAll();
+  res.json(cars);
+});
 db.authenticate()
   .then(() => {
+    db.sync();
     console.log("Connection has been established successfully.");
 
     app.listen(port, () => {
